@@ -1,7 +1,7 @@
 package com.robert.common;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpMethod;
@@ -9,17 +9,18 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
 @ControllerAdvice
-public class MyResponseBodyAdvice implements ResponseBodyAdvice {
-    private static Log log = LogFactory.getLog(MyResponseBodyAdvice.class);
+@Component
+public class MyResponseBodyAdvice implements ResponseBodyAdvice<Object>{
+
+    private static Logger log = LogManager.getLogger(MyResponseBodyAdvice.class);
 
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
