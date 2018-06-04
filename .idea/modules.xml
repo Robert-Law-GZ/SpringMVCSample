@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SpringMVCSample.iml" filepath="$PROJECT_DIR$/SpringMVCSample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SpringSample.iml" filepath="$PROJECT_DIR$/.idea/modules/SpringSample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SpringSample_main.iml" filepath="$PROJECT_DIR$/.idea/modules/SpringSample_main.iml" group="SpringSample" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SpringSample_test.iml" filepath="$PROJECT_DIR$/.idea/modules/SpringSample_test.iml" group="SpringSample" />
     </modules>
   </component>
 </project>
