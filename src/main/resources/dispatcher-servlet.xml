@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd
+                        http://www.springframework.org/schema/mvc
+                        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:annotation-config/>
+    <context:component-scan base-package="com.robert"/>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:config/jdbc.properties</value>
+                <value>classpath:config/redis.properties</value>
+                <value>classpath:config/memocached.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <import resource="classpath:xmemcached.xml"/>
+    <import resource="classpath:websocket.xml"/>
+    <import resource="classpath:redis.xml"/>
+    <import resource="classpath:jdbc.xml"/>
+    <import resource="classpath:activemq.xml"/>
+    <import resource="classpath:mongodb.xml"/>
+
+    <mvc:resources mapping="/images/**" location="/images/"/>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <mvc:annotation-driven>
+        <!--配置@ResponseBody由fastjson解析-->
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="defaultCharset" value="UTF-8"/>
+            </bean>
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4"/>
+        </mvc:message-converters>
+
+    </mvc:annotation-driven>
+
+    <mvc:default-servlet-handler/>
+
+    <!--编写拦截器-->
+    <mvc:interceptors>
+        <!--对特定的url拦截-->
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/login"/>
+            <mvc:exclude-mapping path="/loginInit"/>
+            <mvc:exclude-mapping path="/register"/>
+            <mvc:exclude-mapping path="/object2json"/>
+            <mvc:exclude-mapping path="/dao"/>
+            <mvc:exclude-mapping path="/websocket"/>
+            <mvc:exclude-mapping path="/test/**"/>
+            <mvc:exclude-mapping path="/amq/**"/>
+            <mvc:exclude-mapping path="/file/**"/>
+            <mvc:exclude-mapping path="/images/**"/>
+            <mvc:exclude-mapping path="/mongo/**"/>
+            <bean class="com.robert.interceptor.TestIntereptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <bean id="fastJsonpResponseBodyAdvice" class="com.alibaba.fastjson.support.spring.FastJsonpResponseBodyAdvice">
+        <constructor-arg>
+            <list>
+                <value>callback</value>
+                <value>jsonp</value>
+            </list>
+        </constructor-arg>
+    </bean>
+
+
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 上传文件大小上限，单位为字节（10MB） -->
+        <property name="maxUploadSize">
+            <value>10485760</value>
+        </property>
+        <!-- 请求的编码格式，必须和jSP的pageEncoding属性一致，以便正确读取表单的内容，默认为ISO-8859-1 -->
+        <property name="defaultEncoding">
+            <value>UTF-8</value>
+        </property>
+    </bean>
+
+</beans>
