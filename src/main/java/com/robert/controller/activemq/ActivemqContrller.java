@@ -11,7 +11,6 @@ public class ActivemqContrller {
 
     @RequestMapping(value = "/activemq", method = RequestMethod.GET)
     public ModelAndView welcome() {
-        System.out.println("-------------welcome-----------");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("activemq");
         return mv;
