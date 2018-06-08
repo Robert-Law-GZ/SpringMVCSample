@@ -7,6 +7,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,9 @@ import java.util.List;
 public class EmployeeDAO {
     @Autowired
     private SessionFactory sessionFactory;
+
+    @Autowired
+    private HibernateTemplate hibernateTemplate;
 
     @Cacheable("findAll")
     @Transactional
@@ -31,6 +35,11 @@ public class EmployeeDAO {
     public void add(EmployeeEntity employeeEntity){
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(employeeEntity);
+    }
+
+    @Transactional
+    public void addWithHT(EmployeeEntity employeeEntity){
+        hibernateTemplate.save(employeeEntity);
     }
 
 }

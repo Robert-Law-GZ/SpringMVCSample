@@ -53,7 +53,7 @@ public class EmployeeController {
         employeeEntity.setPassword(password);
         employeeEntity.setUsername(username);
         responseData.setData(employeeEntity);
-        employeeDAO.add(employeeEntity);
+        employeeDAO.addWithHT(employeeEntity);
         return responseData;
     }
 
